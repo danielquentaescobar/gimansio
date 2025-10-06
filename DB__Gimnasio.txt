@@ -1,0 +1,130 @@
+-- =============================
+-- TABLA: Administrativos
+-- =============================
+CREATE TABLE administrativos (
+    id_admin SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    contraseña VARCHAR(255) NOT NULL, -- se recomienda encriptar
+    fecha_contratacion DATE NOT NULL DEFAULT CURRENT_DATE
+);
+
+-- =============================
+-- TABLA: Usuarios (Clientes)
+-- =============================
+CREATE TABLE usuarios (
+    id_usuario SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellido VARCHAR(100) NOT NULL,
+    fecha_nacimiento DATE,
+    telefono VARCHAR(20),
+    email VARCHAR(100) UNIQUE,
+    fecha_registro DATE NOT NULL DEFAULT CURRENT_DATE,
+    registrado_por INT NOT NULL,
+    CONSTRAINT fk_registrado_por FOREIGN KEY (registrado_por) REFERENCES administrativos(id_admin)
+);
+
+-- =============================
+-- TABLA: Membresías (tipos disponibles)
+-- =============================
+CREATE TABLE membresias (
+    id_membresia SERIAL PRIMARY KEY,
+    tipo VARCHAR(50) NOT NULL, -- Semanal, Mensual, Trimestral, etc.
+    duracion_dias INT NOT NULL, -- ejemplo: 7, 30, 90
+    precio DECIMAL(10,2) NOT NULL
+);
+
+-- =============================
+-- TABLA: Registro de Membresías
+-- =============================
+CREATE TABLE registro_membresias (
+    id_registro SERIAL PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    id_membresia INT NOT NULL,
+    fecha_inicio DATE NOT NULL DEFAULT CURRENT_DATE,
+    fecha_fin DATE, -- se llena automáticamente por trigger
+    activo BOOLEAN DEFAULT TRUE,
+    CONSTRAINT fk_reg_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario),
+    CONSTRAINT fk_reg_membresia FOREIGN KEY (id_membresia) REFERENCES membresias(id_membresia)
+);
+
+-- Trigger para calcular fecha_fin
+CREATE OR REPLACE FUNCTION calcular_fecha_fin()
+RETURNS TRIGGER AS $$
+BEGIN
+    SELECT NEW.fecha_inicio + (m.duracion_dias || ' days')::interval
+    INTO NEW.fecha_fin
+    FROM membresias m
+    WHERE m.id_membresia = NEW.id_membresia;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER tg_calcular_fecha_fin
+BEFORE INSERT ON registro_membresias
+FOR EACH ROW
+EXECUTE FUNCTION calcular_fecha_fin();
+
+
+-- =============================
+-- TABLA: Pagos
+-- =============================
+CREATE TABLE pagos (
+    id_pago SERIAL PRIMARY KEY,
+    id_registro INT NOT NULL,
+    fecha_pago DATE NOT NULL DEFAULT CURRENT_DATE,
+    monto_pagado DECIMAL(10,2) NOT NULL,
+    estado_pago VARCHAR(20) CHECK (estado_pago IN ('Completo', 'Parcial', 'Pendiente')),
+    CONSTRAINT fk_pago_registro FOREIGN KEY (id_registro) REFERENCES registro_membresias(id_registro)
+);
+
+
+
+
+-- =============================
+-- 1. ADMINISTRATIVOS
+-- =============================
+INSERT INTO administrativos (nombre, apellido, usuario, contraseña, fecha_contratacion) VALUES
+('Carlos', 'Gómez', 'cgomez', '1234', '2024-01-10'),
+('María', 'Fernández', 'mfernandez', 'abcd', '2024-03-05');
+
+-- =============================
+-- 2. USUARIOS (Clientes)
+-- =============================
+INSERT INTO usuarios (nombre, apellido, fecha_nacimiento, telefono, email, registrado_por) VALUES
+('Juan', 'Pérez', '1995-06-12', '78965412', 'juanperez@mail.com', 1),
+('Ana', 'López', '1990-03-22', '69874521', 'analopez@mail.com', 1),
+('Pedro', 'Martínez', '1987-11-02', '74589632', 'pedromtz@mail.com', 2);
+
+-- =============================
+-- 3. MEMBRESÍAS
+-- =============================
+INSERT INTO membresias (tipo, duracion_dias, precio) VALUES
+('Semanal', 7, 50.00),
+('Mensual', 30, 180.00),
+('Trimestral', 90, 450.00);
+
+-- =============================
+-- 4. REGISTRO DE MEMBRESÍAS
+-- =============================
+-- Juan compra membresía mensual
+INSERT INTO registro_membresias (id_usuario, id_membresia, fecha_inicio, activo) VALUES
+(1, 2, '2025-09-01', TRUE);
+
+-- Ana compra membresía semanal
+INSERT INTO registro_membresias (id_usuario, id_membresia, fecha_inicio, activo) VALUES
+(2, 1, '2025-09-25', TRUE);
+
+-- Pedro compra trimestral
+INSERT INTO registro_membresias (id_usuario, id_membresia, fecha_inicio, activo) VALUES
+(3, 3, '2025-07-15', FALSE);
+
+-- =============================
+-- 5. PAGOS
+-- =============================
+INSERT INTO pagos (id_registro, fecha_pago, monto_pagado, estado_pago) VALUES
+(1, '2025-09-01', 180.00, 'Completo'), -- Juan pago completo
+(2, '2025-09-25', 20.00, 'Parcial'),  -- Ana debe saldo
+(3, '2025-07-15', 450.00, 'Completo'); -- Pedro pago completo
