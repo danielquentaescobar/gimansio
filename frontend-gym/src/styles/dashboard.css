@@ -1,0 +1,118 @@
+/* Estilos para el Dashboard */
+.dashboard-container {
+  min-height: 100vh;
+  background: #0F0F23;
+  color: white;
+}
+
+.dashboard-sidebar {
+  background: linear-gradient(180deg, #4C1D95 0%, #2D1B69 100%);
+  border-right: 1px solid rgba(147, 51, 234, 0.3);
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-main {
+  background: #0F0F23;
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  background: rgba(31, 41, 55, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card {
+  background: linear-gradient(145deg, #1F2937 0%, #111827 100%);
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  box-shadow: 
+    0 10px 25px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(147, 51, 234, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(147, 51, 234, 0.2);
+  border-color: rgba(34, 211, 238, 0.5);
+}
+
+.dashboard-tab {
+  background: transparent;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  color: rgba(147, 51, 234, 0.8);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-tab::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.1), transparent);
+  transition: left 0.3s;
+}
+
+.dashboard-tab:hover::before {
+  left: 100%;
+}
+
+.dashboard-tab.active {
+  background: linear-gradient(135deg, #9333EA, #3B82F6);
+  color: white;
+  border-color: #22D3EE;
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+}
+
+.dashboard-tab:hover {
+  border-color: #22D3EE;
+  color: #22D3EE;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+}
+
+.stats-card {
+  background: linear-gradient(145deg, #1F2937 0%, #111827 100%);
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #9333EA, #22D3EE, #10B981);
+}
+
+.stats-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+.stats-number {
+  color: #22D3EE;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.5);
+}
+
+.stats-label {
+  color: rgba(147, 51, 234, 0.8);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

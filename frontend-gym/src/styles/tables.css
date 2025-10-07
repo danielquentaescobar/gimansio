@@ -1,0 +1,224 @@
+/* Estilos para componentes de tablas */
+.table-container {
+  background: linear-gradient(145deg, #1F2937 0%, #111827 100%);
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  /* Altura mínima para asegurar que los modales se vean completamente */
+  min-height: 600px;
+}
+
+/* Altura mínima específica cuando el contenedor es relativo (para modales) */
+.table-container.relative {
+  min-height: 700px;
+}
+
+.table-header {
+  background: linear-gradient(135deg, #4C1D95, #2D1B69);
+  border-bottom: 1px solid rgba(147, 51, 234, 0.5);
+  padding: 1.5rem;
+}
+
+.table-title {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+}
+
+.table-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10B981, #22D3EE);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(34, 211, 238, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(34, 211, 238, 0.4);
+}
+
+.btn-secondary {
+  background: rgba(107, 114, 128, 0.8);
+  color: white;
+  border: 1px solid rgba(147, 51, 234, 0.3);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(147, 51, 234, 0.6);
+  border-color: #22D3EE;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.3);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #EF4444, #DC2626);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
+}
+
+.table-wrapper {
+  background: #0F0F23;
+  max-height: 600px;
+  overflow-y: auto;
+  /* Asegurar altura mínima para tablas vacías */
+  min-height: 300px;
+  /* Centrar contenido cuando no hay datos */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilos para el estado vacío de la tabla */
+.table-wrapper .data-table {
+  flex: 1;
+}
+
+.table-wrapper .data-table tbody {
+  min-height: 200px;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  background: linear-gradient(135deg, #374151, #1F2937);
+  color: #22D3EE;
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(147, 51, 234, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-table td {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(147, 51, 234, 0.2);
+  color: #D1D5DB;
+  transition: all 0.3s ease;
+}
+
+.data-table tr:hover {
+  background: rgba(147, 51, 234, 0.1);
+}
+
+.data-table tr:hover td {
+  color: white;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-active {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-inactive {
+  background: rgba(239, 68, 68, 0.2);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-pending {
+  background: rgba(251, 191, 36, 0.2);
+  color: #F59E0B;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.loading-spinner {
+  border: 3px solid rgba(147, 51, 234, 0.3);
+  border-top: 3px solid #22D3EE;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Estilos para contenido vacío en tablas */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  color: #9CA3AF;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-subtext {
+  color: #6B7280;
+  font-size: 0.875rem;
+}
+
+/* Mejorar responsive para contenedores de tabla */
+@media (max-width: 768px) {
+  .table-container {
+    min-height: 500px;
+  }
+  
+  .table-container.relative {
+    min-height: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .table-container {
+    min-height: 450px;
+  }
+  
+  .table-container.relative {
+    min-height: 550px;
+  }
+}
