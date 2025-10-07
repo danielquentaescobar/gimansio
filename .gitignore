@@ -1,1 +1,10 @@
 frontend-gym.rar
+# Ignorar archivos comprimidos y pesados
+*.rar
+*.zip
+*.7z
+*.tar
+*.gz
+node_modules/
+dist/
+build/
